@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Caesar's Code</title>
+</head>
+<body>
+    <div id="div-left">
+        <div class="div1">
+            <input type="text" placeholder="Word" class="input1" id="word1"><br />
+            <input type="text" disabled placeholder="Encrypted" class="input1" id="result1">
+        </div>
+        <div class="div1">
+            <input type="text" placeholder="Word" class="input1" id="word2"><br />
+            <input type="text" disabled placeholder="Decrypted" class="input1" id="result2">
+        </div>
+    </div>
+    <div id="div-right">
+        <div class="div1">
+            <input type="number" max="35" id="n1" placeholder="Shift"><br />
+            <input type="button" id="encrypt" onclick="Encrypt()" value="Encrypt">
+            <input type="button" id="decrypt" onclick="Decrypt()" value="Decrypt">
+            <input type="button" id="move-down" onclick="MoveDown()" value="Move Down">
+        </div>
+        <div class="div1">
+            <input type="button" value="Clear" onclick="Clear()" id="clear">
+        </div>
+    </div>
+    <script>
+        let abc = ["a", "ą", "b", "c", "ć", "d", "e", "ę", "f", "g", "h", "i", "j", "k", "l", "ł", "m", "n", "ń", "o", "ó", "p", "q", "r", "s", "ś", "t", "u", "v", "w", "x", "y", "z", "ż", "ź"];
+
+        let newWord = "";
+        let x = "";
+
+        function Encrypt() {
+            let word = document.getElementById("word1").value;
+
+            // Sprawdzenie, czy wprowadzone dane zawierają co najmniej jedną cyfręs
+            if (/\d/.test(word)) {
+                alert("Błąd! Nie wolno wprowadzać liczb.");
+                return;  // Zatrzymuje funkcję, jeżeli wprowadzone dane zawierają cyfrę
+            }
+
+            let word1 = word.replace(/ /g, "");
+            let word3 = word1.toLowerCase();
+            let word2 = word3.split("");
+            let number = document.getElementById("n1").value;
+            if (number == "") {
+                number = 3;
+            }
+            number = parseInt(number);
+            x = parseInt(x);
+
+            for (let i = 0; i < word2.length; i++) {
+                x = abc.indexOf(word2[i]);
+                console.log(x);
+                newWord += abc[(x + number) % abc.length];
+            }
+
+            console.log(newWord);
+            document.getElementById("result1").value = newWord;
+            newWord = "";
+        }
+
+
+
+        function Decrypt() {
+            let word = document.getElementById("word2").value;
+
+            // Sprawdzenie, czy wprowadzone dane są liczbą
+            if (!isNaN(word)) {
+                alert("Błąd! Nie wolno wprowadzać liczb.");
+                return;
+            }
+
+            let word1 = word.split("");
+            console.log(word1);
+            let number = document.getElementById("n1").value;
+            if (number == "") {
+                number = 3;
+            }
+            number = parseInt(number);
+            x = parseInt(x);
+
+            for (let i = 0; i < word1.length; i++) {
+                x = abc.indexOf(word1[i]);
+                console.log(x);
+                newWord += abc[(x - number + abc.length) % abc.length];
+            }
+
+            console.log(newWord);
+            document.getElementById("result2").value = newWord;
+            newWord = "";
+        }
+
+        function MoveDown() {
+            let word = document.getElementById("result1").value;
+            document.getElementById("word2").value = word;
+        }
+
+        function Clear() {
+            document.getElementById("result1").value = "";
+            document.getElementById("result2").value = "";
+        }
+    </script>
+
+</body>
+<style>
+    body {
+        margin: 0;
+        font-family: 'Arial', sans-serif;
+        background-color: #f5f5f5;
+    }
+
+    #div-left, #div-right {
+        float: left;
+        width: 50%;
+        height: 100vh;
+        background-color: #ffffff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+
+    .div1 {
+        border: 1px solid #ddd;
+        box-sizing: border-box;
+        height: 50%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: #f9f9f9;
+        margin: 10px;
+        border-radius: 8px;
+    }
+
+    .input1 {
+        margin-top: 10px;
+        padding: 10px;
+        width: 80%;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        outline: none;
+    }
+
+    #n1 {
+        margin-top: 10px;
+        padding: 10px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        outline: none;
+    }
+
+    #clear, #decrypt, #move-down {
+        margin-top: 1%;
+        width: 25%;
+        height: 10%; /* Mniejsze przyciski */
+        background-color: #d9534f;
+        color: white;
+        font-size: 1.2em; /* Mniejsza czcionka */
+        border: 3px solid #d9534f;
+        cursor: pointer;
+        transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+        border-radius: 8px;
+    }
+
+    #encrypt {
+        margin-top: 1%;
+        width: 25%;
+        height: 10%; /* Mniejsze przyciski */
+        background-color: #5bc0de;
+        color: white;
+        font-size: 1.2em; /* Mniejsza czcionka */
+        border: 3px solid #5bc0de;
+        cursor: pointer;
+        transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+        border-radius: 8px;
+    }
+
+    #clear:hover, #decrypt:hover, #move-down:hover {
+        background-color: #333;
+        border-color: #333;
+        color: #d9534f;
+    }
+
+    #encrypt:hover {
+        background-color: #31708f;
+        border-color: #31708f;
+        color: white;
+    }
+</style>
+
+
+
+
+
+
+
+
+</html>
